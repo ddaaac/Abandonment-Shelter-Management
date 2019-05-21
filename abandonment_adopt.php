@@ -5,13 +5,13 @@ include "util.php";      //유틸 함수
 $conn = dbconnect($host,$dbid,$dbpass,$dbname);
 
 $abandonment_id = $_POST['abandonment_id'];
-$house_type = $_POST['adopt_housetype'];
-$phone = $_POST['adopt_phone'];
-$salary = $_POST['adopt_salary'];
-$address = $_POST['adopt_address'];
+$adopting_family_house = $_POST['adopting_family_house'];
+$adopting_family_phone = $_POST['adopting_family_phone'];
+$adopting_family_salary = $_POST['adopting_family_salary'];
+$adopting_family_address = $_POST['adopting_family_address'];
 
-$ret = mysqli_query($conn, "INSERT INTO AdoptingFamily (Abandonment_id, house_type, phone, monthly_income, address) 
-                    values('$abandonment_id', '$house_type', '$phone', '$salary', '$address')");
+$ret = mysqli_query($conn, "INSERT INTO adopting_family (abandonment_id, adopting_family_house, adopting_family_phone, adopting_family_salary, adopting_family_address) 
+                    values('$abandonment_id', '$adopting_family_house', '$adopting_family_phone', '$adopting_family_salary', '$adopting_family_address')");
 if(!$ret)
 {
     echo mysqli_error($conn);

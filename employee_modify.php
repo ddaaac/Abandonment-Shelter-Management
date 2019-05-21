@@ -5,13 +5,14 @@ include "util.php";      //유틸 함수
 $conn = dbconnect($host,$dbid,$dbpass,$dbname);
 
 $employee_id = $_POST['employee_id'];
-$name = $_POST['employee_name'];
-$phone = $_POST['employee_phone'];
-$salary = $_POST['employee_salary'];
-$Shelter_id = $_POST['shelter_id'];
+$employee_name = $_POST['employee_name'];
+$employee_phone = $_POST['employee_phone'];
+$employee_salary = $_POST['employee_salary'];
+$shelter_id = $_POST['shelter_id'];
 
-$query = "UPDATE Employee SET Employee_id = '$employee_id', name = '$name', phone = '$phone', salary = '$salary', 
-                    Shelter_id = '$Shelter_id' WHERE Employee_id = '$employee_id'";
+$query = "UPDATE employee SET employee_id = '$employee_id', employee_name = '$employee_name', 
+            employee_phone = '$employee_phone', employee_salary = '$employee_salary', 
+            shelter_id = '$shelter_id' WHERE employee_id = '$employee_id'";
 
 $ret = mysqli_query($conn, $query);
 

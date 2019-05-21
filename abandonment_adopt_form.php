@@ -5,32 +5,32 @@ include "util.php";      //유틸 함수
 
 ?>
     <div class="container">
-        <form name="abandonment_adopt_form" action="abandonment_adopt.php" method="post" class="fullwidth">
+        <form name="abandonment_adopting_family_form" action="abandonment_adopt.php" method="post" class="fullwidth">
 
             <h3>유기 동물 입양</h3>
             <input type="hidden" id="abandonment_id" name="abandonment_id"
                    value="<?= $_GET['abandonment_id']?>"/>
             <p>
-                <label for="adopt_salary">월급</label>
-                <input type="text" id="adopt_salary" name="adopt_salary"
+                <label for="adopting_family_salary">월급</label>
+                <input type="text" id="adopting_family_salary" name="adopting_family_salary"
                        placeholder="23.32"/>
             </p>
 
             <p>
-                <label for="adopt_phone">전화번호</label>
-                <input type="text" id="adopt_phone" name="adopt_phone"
+                <label for="adopting_family_phone">전화번호</label>
+                <input type="text" id="adopting_family_phone" name="adopting_family_phone"
                        placeholder="(322)343-2433"/>
             </p>
 
             <p>
-                <label for="adopt_address">주소</label>
-                <input type="text" id="adopt_address" name="adopt_address"
+                <label for="adopting_family_address">주소</label>
+                <input type="text" id="adopting_family_address" name="adopting_family_address"
                         placeholder="경기 고양"/>
             </p>
 
             <p>
-                <label for="adopt_housetype">거주형태</label>
-                <input type="text" id="adopt_housetype" name="adopt_housetype"
+                <label for="adopting_family_house">거주형태</label>
+                <input type="text" id="adopting_family_house" name="adopting_family_house"
                        placeholder="단독주택"/>
             </p>
 
@@ -39,16 +39,16 @@ include "util.php";      //유틸 함수
 
             <script>
                 function validate() {
-                    if(document.getElementById("adopt_salary").value == "") {
+                    if(document.getElementById("adopting_family_salary").value == "") {
                         alert ("월급을 입력해주세요"); return false;
                     }
-                    else if(document.getElementById("adopt_phone").value == "") {
+                    else if(document.getElementById("adopting_family_phone").value == "") {
                         alert ("전화번호를 입력해주세요"); return false;
                     }
-                    else if(document.getElementById("adopt_address").value == "") {
+                    else if(document.getElementById("adopting_family_address").value == "") {
                         alert ("주소를 입력해주세요"); return false;
                     }
-                    else if(document.getElementById("adopt_housetype").value == "") {
+                    else if(document.getElementById("adopting_family_house").value == "") {
                         alert ("거주형태를 입력해주세요"); return false;
                     }
                     return true;

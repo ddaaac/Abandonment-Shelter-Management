@@ -6,14 +6,12 @@ include "util.php";      //유틸 함수
 <div class="container">
     <?
     $conn = dbconnect($host, $dbid, $dbpass, $dbname);
-    $query = "SELECT Volunteer_id, Volunteer.name, Volunteer.phone, address, date, Volunteer.Shelter_id, Shelter.name AS Shelter_name 
-            FROM Volunteer JOIN Shelter ON Volunteer.Shelter_id=Shelter.Shelter_id ORDER BY date DESC";
+    $query = "SELECT * FROM volunteer NATURAL JOIN shelter";
     if (array_key_exists("search_keyword", $_GET)) {  // array_key_exists() : Checks if the specified key exists in the array
         $search_keyword = $_GET["search_keyword"];
-        $query = "SELECT Volunteer_id, Volunteer.name, Volunteer.phone, address, date, Volunteer.Shelter_id, Shelter.name AS Shelter_name 
-            FROM Volunteer JOIN Shelter ON Volunteer.Shelter_id=Shelter.Shelter_id
-            WHERE Volunteer.name LIKE '%$search_keyword%' ORDER BY Volunteer_id";
+        $query = $query . " WHERE volunteer_name LIKE '%$search_keyword%'";
     }
+    $query = $query . " ORDER BY volunteer_date DESC";
     $res = mysqli_query($conn, $query);
     if (!$res) {
         die('Query Error : ' . mysqli_error());
@@ -48,19 +46,17 @@ include "util.php";      //유틸 함수
         </thead>
         <tbody>
         <?
-        $row_index = 1;
         while ($row = mysqli_fetch_array($res)) {
             echo "<tr>";
-            echo "<td>{$row['name']}</td>";
-            echo "<td>{$row['date']}</td>";
-            echo "<td>{$row['phone']}</td>";
-            echo "<td>{$row['address']}</td>";
-            echo "<td>{$row['Shelter_name']}</td>";
-            echo "<td width='17%'>
-                 <button onclick='javascript:deleteConfirm({$row['Volunteer_id']})' class='button danger small'>삭제</button>
+            echo "<td>{$row['volunteer_name']}</td>";
+            echo "<td>{$row['volunteer_date']}</td>";
+            echo "<td>{$row['volunteer_phone']}</td>";
+            echo "<td>{$row['volunteer_address']}</td>";
+            echo "<td>{$row['shelter_name']}</td>";
+            echo "<td width='10%'>
+                 <button onclick='javascript:deleteConfirm({$row['volunteer_id']})' class='button danger small'>삭제</button>
                 </td>";
             echo "</tr>";
-            $row_index++;
         }
         ?>
         </tbody>

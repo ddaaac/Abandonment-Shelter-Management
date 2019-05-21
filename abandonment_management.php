@@ -6,14 +6,12 @@ include "util.php";      //유틸 함수
 <div class="container">
     <?
     $conn = dbconnect($host, $dbid, $dbpass, $dbname);
-    $query = "SELECT Abandonment_id, upkind, kind, date_begin, name 
-            FROM Abandonment JOIN Shelter ON Abandonment.Shelter_id=Shelter.Shelter_id ORDER BY Abandonment_id";
+    $query = "SELECT * FROM abandonment NATURAL JOIN shelter NATURAL LEFT OUTER JOIN adopting_family";
     if (array_key_exists("search_keyword", $_GET)) {  // array_key_exists() : Checks if the specified key exists in the array
         $search_keyword = $_GET["search_keyword"];
-        $query =  "SELECT Abandonment_id, upkind, kind, date_begin, name FROM Abandonment JOIN Shelter ON Abandonment.Shelter_id=Shelter.Shelter_id
-                    WHERE name LIKE '%$search_keyword%' OR upkind LIKE '%$search_keyword%' OR kind LIKE '%$search_keyword%'
-                    ORDER BY Abandonment_id";
+        $query =  $query . " WHERE abandonment_name LIKE '%$search_keyword%' OR abandonment_upkind LIKE '%$search_keyword%' OR abandonment_kind LIKE '%$search_keyword%'";
     }
+    $query = $query . " ORDER BY abandonment_id";
     $res = mysqli_query($conn, $query);
     if (!$res) {
         die('Query Error : ' . mysqli_error());
@@ -44,35 +42,28 @@ include "util.php";      //유틸 함수
             <th>품종</th>
             <th>발견 날짜</th>
             <th>보호소이름</th>
-            <th>입양여부</th>
+            <th>입양</th>
             <th>기능</th>
         </tr>
         </thead>
         <tbody>
         <?
-        $row_index = 1;
         while ($row = mysqli_fetch_array($res)) {
             echo "<tr>";
-            echo "<td><a href='abandonment_view.php?abandonment_id={$row['Abandonment_id']}'>{$row['Abandonment_id']}</a></td>";
-            echo "<td>{$row['upkind']}</td>";
-            echo "<td>{$row['kind']}</td>";
-            echo "<td>{$row['date_begin']}</td>";
-            echo "<td>{$row['name']}</td>";
+            echo "<td><a href='abandonment_view.php?abandonment_id={$row['abandonment_id']}'>{$row['abandonment_id']}</a></td>";
+            echo "<td>{$row['abandonment_upkind']}</td>";
+            echo "<td>{$row['abandonment_kind']}</td>";
+            echo "<td>{$row['abandonment_date']}</td>";
+            echo "<td>{$row['shelter_name']}</td>";
             echo "<td>";
-            $query = "SELECT * FROM AdoptingFamily WHERE Abandonment_id={$row['Abandonment_id']}";
-            $tmp_res = mysqli_query($conn, $query);
-            $if_adopt = mysqli_fetch_assoc($tmp_res);
-            echo ($if_adopt == "") ? "N" : "Y";
+            echo ($row['adopting_family_phone'] == "") ?
+                "<a href = 'abandonment_adopt_form.php?abandonment_id={$row['abandonment_id']}' ><button class='button small'> 입양</button ></a>" :
+                "<a href = 'adoptfamily_view.php?abandonment_id={$row['abandonment_id']}'>입양완료</a>";
             echo "</td>";
-            echo "<td width='24%'>
-                <a href='abandonment_form.php?abandonment_id={$row['Abandonment_id']}'><button class='button primary small'>수정</button></a>
-                 <button onclick='javascript:deleteConfirm({$row['Abandonment_id']})' class='button danger small'>삭제</button>";
-                if($if_adopt == "") {
-                    echo "<a href = 'abandonment_adopt_form.php?abandonment_id={$row['Abandonment_id']}' ><button class='button small' > 입양</button ></a>";
-                    }
-            echo "</td>";
+            echo "<td width='17%'>
+                <a href='abandonment_form.php?abandonment_id={$row['abandonment_id']}'><button class='button primary small'>수정</button></a>
+                 <button onclick='javascript:deleteConfirm({$row['abandonment_id']})' class='button danger small'>삭제</button></td>";
             echo "</tr>";
-            $row_index++;
         }
         ?>
         </tbody>

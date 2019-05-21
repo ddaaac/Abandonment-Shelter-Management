@@ -5,14 +5,16 @@ include "util.php";      //유틸 함수
 $conn = dbconnect($host,$dbid,$dbpass,$dbname);
 
 $abandonment_id = $_POST['abandonment_id'];
-$upkind = $_POST['abandonment_upkind'];
-$kind = $_POST['abandonment_kind'];
-$date = $_POST['abandonment_date'];
-$is_neuter = $_POST['abandonment_isneuter'];
-$Shelter_id = $_POST['shelter_id'];
+$abandonment_upkind = $_POST['abandonment_upkind'];
+$abandonment_kind = $_POST['abandonment_kind'];
+$abandonment_date = $_POST['abandonment_date'];
+$abandonment_is_neuter = $_POST['abandonment_is_neuter'];
+$shelter_id = $_POST['shelter_id'];
 
-$query = "UPDATE Abandonment SET Abandonment_id = '$abandonment_id', upkind = '$upkind', kind = '$kind', date_begin = '$date', 
-                    is_neuter = '$is_neuter', Shelter_id = '$Shelter_id' WHERE Abandonment_id = '$abandonment_id'";
+$query = "UPDATE abandonment SET abandonment_id = '$abandonment_id', abandonment_upkind = '$abandonment_upkind', 
+            abandonment_kind = '$abandonment_kind', abandonment_date = '$abandonment_date', 
+            abandonment_is_neuter = '$abandonment_is_neuter', shelter_id = '$shelter_id' 
+            WHERE abandonment_id = '$abandonment_id'";
 
 $ret = mysqli_query($conn, $query);
 

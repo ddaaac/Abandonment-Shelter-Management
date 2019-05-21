@@ -6,7 +6,7 @@ $conn = dbconnect($host,$dbid,$dbpass,$dbname);
 
 $volunteer_id = $_GET['volunteer_id'];
 
-$ret = mysqli_query($conn, "DELETE FROM Volunteer WHERE Volunteer_id = $volunteer_id");
+$ret = mysqli_query($conn, "DELETE FROM volunteer WHERE volunteer_id = $volunteer_id");
 
 if(!$ret)
 {

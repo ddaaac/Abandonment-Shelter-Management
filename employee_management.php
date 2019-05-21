@@ -2,30 +2,22 @@
 include "header.php";
 include "config.php";    //데이터베이스 연결 설정파일
 include "util.php";      //유틸 함수
-
-$conn = dbconnect($host, $dbid, $dbpass, $dbname);
-$shelters = array();
-$query = "SELECT * FROM Shelter ORDER BY Shelter_id";
-$res = mysqli_query($conn, $query);
-while($row = mysqli_fetch_array($res)) {
-    $shelters[$row['Shelter_id']] = $row['name'];
-}
 ?>
 
 <div class="container">
     <?
-    $query = "SELECT Employee_id, Employee.name, Employee.phone, salary, Employee.Shelter_id, 
-            Shelter.name AS Shelter_name, Shelter.phone AS Shelter_phone, Shelter.city AS Shelter_city 
-            FROM Employee JOIN Shelter ON Employee.Shelter_id=Shelter.Shelter_id";
+    $conn = dbconnect($host, $dbid, $dbpass, $dbname);
+    $shelters = shelter_array($conn);
+    $query = "SELECT * FROM employee NATURAL JOIN shelter";
     if (array_key_exists("search_keyword", $_GET)) {  // array_key_exists() : Checks if the specified key exists in the array
         $search_keyword = $_GET["search_keyword"];
-        $query = $query . " WHERE Employee.name LIKE '%$search_keyword%'";
+        $query = $query . " WHERE employee_name LIKE '%$search_keyword%'";
     }
     if (array_key_exists("shelter_select", $_GET) && $_GET["shelter_select"] != "") {
         $shelter_select = $_GET["shelter_select"];
-        $query = $query . " HAVING Shelter_id=$shelter_select";
+        $query = $query . " HAVING shelter_id=$shelter_select";
     }
-    $query = $query . " ORDER BY Employee_id";
+    $query = $query . " ORDER BY employee_id";
     $res = mysqli_query($conn, $query);
     if (!$res) {
         die('Query Error : ' . mysqli_error());
@@ -47,7 +39,6 @@ while($row = mysqli_fetch_array($res)) {
             </ul>
             <ul class="pull-right">
                 <select id="shelter_select" name="shelter_select">
-                    <option value="">보호소 선택</option>
                     <?
                     foreach($shelters as $id => $name) {
                         if(array_key_exists("shelter_select", $_GET) && $_GET['shelter_select'] != "" && $_GET['shelter_select'] == $id){
@@ -57,6 +48,7 @@ while($row = mysqli_fetch_array($res)) {
                         }
                     }
                     ?>
+                    <option value="" <?=($_GET['shelter_select'])? '':'selected';?>>보호소 선택</option>
                 </select>
             </ul>
         </div>
@@ -76,13 +68,13 @@ while($row = mysqli_fetch_array($res)) {
         $row_index = 1;
         while ($row = mysqli_fetch_array($res)) {
             echo "<tr>";
-            echo "<td>{$row['name']}</td>";
-            echo "<td>{$row['phone']}</td>";
-            echo "<td>{$row['salary']}</td>";
-            echo "<td>{$row['Shelter_name']}</td>";
+            echo "<td>{$row['employee_name']}</td>";
+            echo "<td>{$row['employee_phone']}</td>";
+            echo "<td>{$row['employee_salary']}</td>";
+            echo "<td>{$row['shelter_name']}</td>";
             echo "<td width='17%'>
-                <a href='employee_form.php?employee_id={$row['Employee_id']}'><button class='button primary small'>수정</button></a>
-                 <button onclick='javascript:deleteConfirm({$row['Employee_id']})' class='button danger small'>삭제</button>
+                <a href='employee_form.php?employee_id={$row['employee_id']}'><button class='button primary small'>수정</button></a>
+                 <button onclick='javascript:deleteConfirm({$row['employee_id']})' class='button danger small'>삭제</button>
                 </td>";
             echo "</tr>";
             $row_index++;

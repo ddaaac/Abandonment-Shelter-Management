@@ -9,8 +9,8 @@ $action = "volunteer_insert.php";
 
 if (array_key_exists("volunteer_id", $_GET)) {
     $volunteer_id = $_GET["volunteer_id"];
-    $query = "SELECT Volunteer_id, name, phone, address, date,
-            FROM Volunteer WHERE Volunteer_id=$volunteer_id";
+    $query = "SELECT volunteer_id, name, phone, address, date,
+            FROM volunteer WHERE volunteer_id=$volunteer_id";
     $res = mysqli_query($conn, $query);
     $volunteer = mysqli_fetch_assoc($res);
     if (!$volunteer) {
@@ -20,18 +20,8 @@ if (array_key_exists("volunteer_id", $_GET)) {
     $action = "volunteer_modify.php";
 }
 
-$shelters = array();
-$query = "SELECT * FROM Shelter ORDER BY Shelter_id";
-$res = mysqli_query($conn, $query);
-while($row = mysqli_fetch_array($res)) {
-    $shelters[$row['Shelter_id']] = $row['name'];
-}
-
-$last_id = -1;
-$query = "SELECT Volunteer_id FROM Volunteer ORDER BY Volunteer_id DESC LIMIT 1";
-$res = mysqli_query($conn, $query);
-$row = mysqli_fetch_array($res);
-$last_id = $row['Volunteer_id'];
+$shelters = shelter_array($conn);
+$last_id = find_last_id('volunteer', $conn);
 
 ?>
     <div class="container">
@@ -39,7 +29,7 @@ $last_id = $row['Volunteer_id'];
 
             <h3>봉사자 <?=$mode?></h3>
             <input type="hidden" id="volunteer_id" name="volunteer_id"
-                   value="<?= ($volunteer['Volunteer_id'] == '') ? $last_id+1 : $volunteer['Volunteer_id'] ?>"/>
+                   value="<?= ($volunteer['volunteer_id'] == '') ? $last_id+1 : $volunteer['volunteer_id'] ?>"/>
             <p>
                 <label for="volunteer_name">이름</label>
                 <input type="text" id="volunteer_name" name="volunteer_name"
@@ -67,16 +57,16 @@ $last_id = $row['Volunteer_id'];
             <p>
                 <label for="shelter_id">보호소</label>
                 <select id="shelter_id" name="shelter_id">
-                    <option value="-1">선택해주세요</option>
                     <?
                     foreach($shelters as $id => $name) {
-                        if($id == $volunteer['Shelter_id']){
+                        if($id == $volunteer['shelter_id']){
                             echo "<option value='{$id}' selected>{$name}</option>";
                         }  else {
                             echo "<option value='{$id}'>{$name}</option>";
                         }
                     }
                     ?>
+                    <option value="-1" <?=($_GET['volunteer_id'])?'':'selected';?>>선택해주세요</option>
                 </select>
             </p>
 

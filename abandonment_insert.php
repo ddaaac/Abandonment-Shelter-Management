@@ -5,14 +5,14 @@ include "util.php";      //유틸 함수
 $conn = dbconnect($host,$dbid,$dbpass,$dbname);
 
 $abandonment_id = $_POST['abandonment_id'];
-$upkind = $_POST['abandonment_upkind'];
-$kind = $_POST['abandonment_kind'];
-$date_begin = $_POST['abandonment_date'];
-$is_neuter = $_POST['abandonment_isneuter'];
-$Shelter_id = $_POST['shelter_id'];
+$abandonment_upkind = $_POST['abandonment_upkind'];
+$abandonment_kind = $_POST['abandonment_kind'];
+$abandonment_date = $_POST['abandonment_date'];
+$abandonment_is_neuter = $_POST['abandonment_is_neuter'];
+$shelter_id = $_POST['shelter_id'];
 
-$ret = mysqli_query($conn, "INSERT INTO Abandonment (Abandonment_id, upkind, kind, date_begin, is_neuter, Shelter_id) 
-                    values('$abandonment_id', '$upkind', '$kind', '$date_begin', '$is_neuter', '$Shelter_id')");
+$ret = mysqli_query($conn, "INSERT INTO abandonment (abandonment_id, abandonment_upkind, abandonment_kind, abandonment_date, abandonment_is_neuter, shelter_id) 
+                    values('$abandonment_id', '$abandonment_upkind', '$abandonment_kind', '$abandonment_date', '$abandonment_is_neuter', '$shelter_id')");
 if(!$ret)
 {
     echo mysqli_error($conn);

@@ -9,8 +9,7 @@ $action = "abandonment_insert.php";
 
 if (array_key_exists("abandonment_id", $_GET)) {
     $abandonment_id = $_GET["abandonment_id"];
-    $query = "SELECT Abandonment_id, upkind, kind, date_begin, is_neuter, name, Abandonment.Shelter_id
-                FROM Abandonment JOIN Shelter ON Abandonment.Shelter_id=Shelter.Shelter_id WHERE Abandonment_id = $abandonment_id";
+    $query = "SELECT * FROM abandonment NATURAL JOIN shelter WHERE abandonment_id = $abandonment_id";
     $res = mysqli_query($conn, $query);
     $abandonment = mysqli_fetch_assoc($res);
     if (!$abandonment) {
@@ -20,18 +19,8 @@ if (array_key_exists("abandonment_id", $_GET)) {
     $action = "abandonment_modify.php";
 }
 
-$shelters = array();
-$query = "SELECT * FROM Shelter ORDER BY Shelter_id";
-$res = mysqli_query($conn, $query);
-while($row = mysqli_fetch_array($res)) {
-    $shelters[$row['Shelter_id']] = $row['name'];
-}
-
-$last_id = -1;
-$query = "SELECT Abandonment_id FROM Abandonment ORDER BY Abandonment_id DESC LIMIT 1";
-$res = mysqli_query($conn, $query);
-$row = mysqli_fetch_array($res);
-$last_id = $row['Abandonment_id'];
+$shelters = shelter_array($conn);
+$last_id = find_last_id('abandonment', $conn);
 
 ?>
     <div class="container">
@@ -39,47 +28,47 @@ $last_id = $row['Abandonment_id'];
 
             <h3>유기 동물 <?=$mode?></h3>
             <input type="hidden" id="abandonment_id" name="abandonment_id"
-                   value="<?= ($abandonment['Abandonment_id'] == '') ? $last_id+1 : $abandonment['Abandonment_id'] ?>"/>
+                   value="<?= ($abandonment) ? $abandonment['abandonment_id'] : $last_id+1 ?>"/>
             <p>
                 <label for="abandonment_upkind">축종</label>
                 <input type="text" id="abandonment_upkind" name="abandonment_upkind"
-                       placeholder="개" value="<?= $abandonment['upkind'] ?>"/>
+                       placeholder="개" value="<?= $abandonment['abandonment_upkind'] ?>"/>
             </p>
 
             <p>
                 <label for="abandonment_kind">품종</label>
                 <input type="text" id="abandonment_kind" name="abandonment_kind"
-                       placeholder="시베리안허스키" value="<?= $abandonment['kind'] ?>"/>
+                       placeholder="시베리안허스키" value="<?= $abandonment['abandonment_kind'] ?>"/>
             </p>
 
             <p>
                 <label for="abandonment_date">유기 날짜</label>
                 <input type="date" id="abandonment_date"
-                       name="abandonment_date" value="<?= $abandonment['date_begin'] ?>"/>
+                       name="abandonment_date" value="<?= $abandonment['abandonment_date'] ?>"/>
             </p>
 
             <p>
-                <label for="abandonment_isneuter">중성화 여부</label>
-                <select id="abandonment_isneuter" name="abandonment_isneuter">
-                    <option value ="-1">선택해주세요</option>
-                    <option value="1" <?= ($abandonment['is_neuter']==1)? 'selected' : ''; ?>>Y</option>
-                    <option value="0" <?= ($abandonment['is_neuter']==1)? '' : 'selected'; ?>>N</option>
+                <label for="abandonment_is_neuter">중성화 여부</label>
+                <select id="abandonment_is_neuter" name="abandonment_is_neuter">
+                    <option value="1" <?= ($abandonment['abandonment_is_neuter']==1)? 'selected' : ''; ?>>Y</option>
+                    <option value="0" <?= ($abandonment['abandonment_is_neuter']==0)? 'selected' : ''; ?>>N</option>
+                    <option value ="-1"<?= ($abandonment)? '' : 'selected'; ?>>선택해주세요</option>
                 </select>
             </p>
 
             <p>
                 <label for="shelter_id">보호소</label>
                 <select id="shelter_id" name="shelter_id">
-                    <option value="-1">선택해주세요</option>
                     <?
                         foreach($shelters as $id => $name) {
-                            if($id == $abandonment['Shelter_id']){
+                            if($id == $abandonment['shelter_id']){
                                 echo "<option value='{$id}' selected>{$name}</option>";
                             }  else {
                                 echo "<option value='{$id}'>{$name}</option>";
                             }
                         }
                     ?>
+                    <option value="-1"<?= ($abandonment)? '' : 'selected'; ?>>선택해주세요</option>
                 </select>
             </p>
 
@@ -96,7 +85,7 @@ $last_id = $row['Abandonment_id'];
                     else if(document.getElementById("abandonment_date").value == "") {
                         alert ("날짜를 입력해주세요"); return false;
                     }
-                    else if(document.getElementById("abandonment_isneuter").value == "-1") {
+                    else if(document.getElementById("abandonment_is_neuter").value == "-1") {
                         alert ("중성화 여부를 선택해주세요"); return false;
                     }
                     else if(document.getElementById("shelter_id").value == "-1") {

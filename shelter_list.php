@@ -6,8 +6,7 @@ include "util.php";      //유틸 함수
 <div class="container">
     <?
     $conn = dbconnect($host, $dbid, $dbpass, $dbname);
-    $query = "SELECT Shelter_id, Shelter.name, Shelter.phone, Shelter.city
-              FROM Shelter ORDER BY Shelter_id";
+    $query = "SELECT * FROM shelter ORDER BY shelter_id";
     $res = mysqli_query($conn, $query);
     if (!$res) {
         die('Query Error : ' . mysqli_error());
@@ -25,15 +24,13 @@ include "util.php";      //유틸 함수
         </thead>
         <tbody>
         <?
-        $row_index = 1;
         while ($row = mysqli_fetch_array($res)) {
             echo "<tr>";
-            echo "<td>{$row['Shelter_id']}</td>";
-            echo "<td>{$row['name']}</td>";
-            echo "<td>{$row['phone']}</td>";
-            echo "<td>{$row['city']}</td>";
+            echo "<td>{$row['shelter_id']}</td>";
+            echo "<td>{$row['shelter_name']}</td>";
+            echo "<td>{$row['shelter_phone']}</td>";
+            echo "<td>{$row['shelter_address']}</td>";
             echo "</tr>";
-            $row_index++;
         }
         ?>
         </tbody>

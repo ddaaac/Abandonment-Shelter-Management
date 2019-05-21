@@ -2,11 +2,9 @@
 include "header.php";
 include "config.php";    //데이터베이스 연결 설정파일
 include "util.php";      //유틸 함수
-
 $conn = dbconnect($host, $dbid, $dbpass, $dbname);
 $mode = "입력";
 $action = "employee_insert.php";
-
 if (array_key_exists("employee_id", $_GET)) {
     $employee_id = $_GET["employee_id"];
     $query = "SELECT Employee_id, name, phone, salary, Shelter_id
@@ -19,20 +17,17 @@ if (array_key_exists("employee_id", $_GET)) {
     $mode = "수정";
     $action = "employee_modify.php";
 }
-
 $shelters = array();
 $query = "SELECT * FROM Shelter ORDER BY Shelter_id";
 $res = mysqli_query($conn, $query);
 while($row = mysqli_fetch_array($res)) {
     $shelters[$row['Shelter_id']] = $row['name'];
 }
-
 $last_id = -1;
 $query = "SELECT Employee_id FROM Employee ORDER BY Employee_id DESC LIMIT 1";
 $res = mysqli_query($conn, $query);
 $row = mysqli_fetch_array($res);
 $last_id = $row['Employee_id'];
-
 ?>
     <div class="container">
         <form name="employee_form" action="<?=$action?>" method="post" class="fullwidth">

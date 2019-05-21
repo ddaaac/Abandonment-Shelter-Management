@@ -5,6 +5,9 @@ include "util.php";      //유틸 함수
 
 $conn = dbconnect($host, $dbid, $dbpass, $dbname);
 
+일부러 내는 에러@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// view에 입양가족 볼수있게 추가!!!!
+
 if (array_key_exists("abandonment_id", $_GET)) {
     $abandonment_id = $_GET["abandonment_id"];
     $query = "SELECT Abandonment_id, upkind, kind, date_begin, is_neuter, name, phone, city

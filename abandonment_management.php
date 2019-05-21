@@ -44,6 +44,7 @@ include "util.php";      //유틸 함수
             <th>품종</th>
             <th>발견 날짜</th>
             <th>보호소이름</th>
+            <th>입양여부</th>
             <th>기능</th>
         </tr>
         </thead>
@@ -54,14 +55,22 @@ include "util.php";      //유틸 함수
             echo "<tr>";
             echo "<td><a href='abandonment_view.php?abandonment_id={$row['Abandonment_id']}'>{$row['Abandonment_id']}</a></td>";
             echo "<td>{$row['upkind']}</td>";
-//            echo "<td><a href='product_view.php?product_id={$row['product_id']}'>{$row['product_name']}</a></td>";
             echo "<td>{$row['kind']}</td>";
             echo "<td>{$row['date_begin']}</td>";
             echo "<td>{$row['name']}</td>";
-            echo "<td width='17%'>
+            echo "<td>";
+            $query = "SELECT * FROM AdoptingFamily WHERE Abandonment_id={$row['Abandonment_id']}";
+            $tmp_res = mysqli_query($conn, $query);
+            $if_adopt = mysqli_fetch_assoc($tmp_res);
+            echo ($if_adopt == "") ? "N" : "Y";
+            echo "</td>";
+            echo "<td width='24%'>
                 <a href='abandonment_form.php?abandonment_id={$row['Abandonment_id']}'><button class='button primary small'>수정</button></a>
-                 <button onclick='javascript:deleteConfirm({$row['Abandonment_id']})' class='button danger small'>삭제</button>
-                </td>";
+                 <button onclick='javascript:deleteConfirm({$row['Abandonment_id']})' class='button danger small'>삭제</button>";
+                if($if_adopt == "") {
+                    echo "<a href = 'abandonment_adopt_form.php?abandonment_id={$row['Abandonment_id']}' ><button class='button small' > 입양</button ></a>";
+                    }
+            echo "</td>";
             echo "</tr>";
             $row_index++;
         }

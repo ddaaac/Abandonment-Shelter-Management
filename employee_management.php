@@ -65,6 +65,8 @@ while($row = mysqli_fetch_array($res)) {
         <thead>
         <tr>
             <th>이름</th>
+            <th>전화번호</th>
+            <th>월급</th>
             <th>보호소이름</th>
             <th>기능</th>
         </tr>
@@ -74,9 +76,10 @@ while($row = mysqli_fetch_array($res)) {
         $row_index = 1;
         while ($row = mysqli_fetch_array($res)) {
             echo "<tr>";
-            echo "<td><a href='employee_view.php?employee_id={$row['Employee_id']}'>{$row['name']}</a></td>";
+            echo "<td>{$row['name']}</td>";
+            echo "<td>{$row['phone']}</td>";
+            echo "<td>{$row['salary']}</td>";
             echo "<td>{$row['Shelter_name']}</td>";
-//            echo "<td><a href='product_view.php?product_id={$row['product_id']}'>{$row['product_name']}</a></td>";
             echo "<td width='17%'>
                 <a href='employee_form.php?employee_id={$row['Employee_id']}'><button class='button primary small'>수정</button></a>
                  <button onclick='javascript:deleteConfirm({$row['Employee_id']})' class='button danger small'>삭제</button>

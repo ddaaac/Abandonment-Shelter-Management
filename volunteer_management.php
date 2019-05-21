@@ -7,7 +7,7 @@ include "util.php";      //유틸 함수
     <?
     $conn = dbconnect($host, $dbid, $dbpass, $dbname);
     $query = "SELECT Volunteer_id, Volunteer.name, Volunteer.phone, address, date, Volunteer.Shelter_id, Shelter.name AS Shelter_name 
-            FROM Volunteer JOIN Shelter ON Volunteer.Shelter_id=Shelter.Shelter_id ORDER BY Volunteer_id";
+            FROM Volunteer JOIN Shelter ON Volunteer.Shelter_id=Shelter.Shelter_id ORDER BY date DESC";
     if (array_key_exists("search_keyword", $_GET)) {  // array_key_exists() : Checks if the specified key exists in the array
         $search_keyword = $_GET["search_keyword"];
         $query = "SELECT Volunteer_id, Volunteer.name, Volunteer.phone, address, date, Volunteer.Shelter_id, Shelter.name AS Shelter_name 
@@ -40,6 +40,8 @@ include "util.php";      //유틸 함수
         <tr>
             <th>이름</th>
             <th>봉사 날짜</th>
+            <th>전화번호</th>
+            <th>주소</th>
             <th>보호소이름</th>
             <th>기능</th>
         </tr>
@@ -49,8 +51,10 @@ include "util.php";      //유틸 함수
         $row_index = 1;
         while ($row = mysqli_fetch_array($res)) {
             echo "<tr>";
-            echo "<td><a href='volunteer_view.php?volunteer_id={$row['Volunteer_id']}'>{$row['name']}</a></td>";
+            echo "<td>{$row['name']}</td>";
             echo "<td>{$row['date']}</td>";
+            echo "<td>{$row['phone']}</td>";
+            echo "<td>{$row['address']}</td>";
             echo "<td>{$row['Shelter_name']}</td>";
             echo "<td width='17%'>
                  <button onclick='javascript:deleteConfirm({$row['Volunteer_id']})' class='button danger small'>삭제</button>

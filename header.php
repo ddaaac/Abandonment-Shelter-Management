@@ -15,10 +15,10 @@
 <!--                <li>-->
 <!--                    <input type="text" name="search_keyword" placeholder="관리 프로그램 통합검색">-->
 <!--                </li>-->
+                <li><a href="shelter_list.php">보호소 현황</a></li>
                 <li><a href='abandonment_management.php'>유기동물 관리</a></li>
                 <li><a href='volunteer_management.php'>봉사자 관리</a></li>
-                <li><a href='product_form.php'>인사 관리</a></li>
-                <li><a href='site_info.php'>소개</a></li>
+                <li><a href='employee_management.php'>인사 관리</a></li>
             </ul>
         </div>
     </div>

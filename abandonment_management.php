@@ -9,7 +9,7 @@ include "util.php";      //유틸 함수
     $query = "SELECT * FROM abandonment NATURAL JOIN shelter NATURAL LEFT OUTER JOIN adopting_family";
     if (array_key_exists("search_keyword", $_GET)) {  // array_key_exists() : Checks if the specified key exists in the array
         $search_keyword = $_GET["search_keyword"];
-        $query =  $query . " WHERE abandonment_name LIKE '%$search_keyword%' OR abandonment_upkind LIKE '%$search_keyword%' OR abandonment_kind LIKE '%$search_keyword%'";
+        $query =  $query . " WHERE shelter_name LIKE '%$search_keyword%' OR abandonment_upkind LIKE '%$search_keyword%' OR abandonment_kind LIKE '%$search_keyword%'";
     }
     $query = $query . " ORDER BY abandonment_id";
     $res = mysqli_query($conn, $query);

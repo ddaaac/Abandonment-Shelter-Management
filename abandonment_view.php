@@ -35,7 +35,7 @@ if (array_key_exists("abandonment_id", $_GET)) {
         </p>
 
         <p>
-            <label for="abandonment_date">유기 날짜</label>
+            <label for="abandonment_date">발견 날짜</label>
             <input readonly type="text" id="abandonment_date" name="abandonment_date" value="<?= $abandonment['abandonment_date'] ?>"/>
         </p>
 

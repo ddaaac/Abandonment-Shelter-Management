@@ -23,7 +23,7 @@ $last_id = find_last_id('employee', $conn);
     <div class="container">
         <form name="employee_form" action="<?=$action?>" method="post" class="fullwidth">
 
-            <h3>봉사자 <?=$mode?></h3>
+            <h3>직원 <?=$mode?></h3>
             <input type="hidden" id="employee_id" name="employee_id"
                    value="<?= ($employee) ? $employee['employee_id'] : $last_id+1?>"/>
             <p>

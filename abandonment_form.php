@@ -42,7 +42,7 @@ $last_id = find_last_id('abandonment', $conn);
             </p>
 
             <p>
-                <label for="abandonment_date">유기 날짜</label>
+                <label for="abandonment_date">발견 날짜</label>
                 <input type="date" id="abandonment_date"
                        name="abandonment_date" value="<?= $abandonment['abandonment_date'] ?>"/>
             </p>

@@ -27,14 +27,14 @@ include "util.php";      //유틸 함수
     <div class="container">
         <ul class="pull-left">
             <a href="employee_form.php">
-                <button type="button" class="button primary small">담당자 등록</button>
+                <button type="button" class="button primary small">직원 등록</button>
             </a>
         </ul>
     </div>
     <form action="employee_management.php" method="get">
         <div class="container">
             <ul class="pull-right">
-                <input type="text" name="search_keyword" placeholder="담당자 이름으로 검색"
+                <input type="text" name="search_keyword" placeholder="직원 이름으로 검색"
                        style="padding:5px 0px 5px 0px; margin-bottom:20px " size="30">
             </ul>
             <ul class="pull-right">
